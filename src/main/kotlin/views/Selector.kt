@@ -1,5 +1,6 @@
 package views
 
+import app.Styles
 import core.ImageUtilities
 import core.Pixelator
 import javafx.scene.image.ImageView
@@ -11,17 +12,22 @@ import java.io.File
 class Selector : View() {
     private var img: ImageView? = null
     override val root = vbox {
-        button("Choose an image to make pixel-art out of it") {
+        addClass(Styles.vbox)
+        button("Choose an image to make pixel art out of it") {
             action {
                 val picture = chooseFile()
                 val newPicture = pixelate(picture)
                 if (newPicture != null) {
                     if (img == null) {
-                        img = this@vbox.imageview(newPicture)
+                        img = this@vbox.imageview(newPicture) {
+                            isPreserveRatio = true
+                            fitWidth = 500.0
+                            fitHeight = 500.0
+                            addClass(Styles.image)
+                        }
                     } else {
                         img!!.image = newPicture
                     }
-                    this@vbox.autosize()
                     currentWindow!!.sizeToScene()
                 }
             }
